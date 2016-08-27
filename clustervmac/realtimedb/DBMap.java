@@ -2,6 +2,7 @@ package clustervmac.realtimedb;
 
 import java.util.Collection;
 import java.util.Map;
+import java.util.Set;
 
 public interface DBMap <K,V> {
 	// below are the basic CRUD method
@@ -22,5 +23,6 @@ public interface DBMap <K,V> {
 	public Map.Entry<K, V> firstEnt();
 	// return the highest key-value pair
 	public Map.Entry<K, V> lastEnt();
-	
+	// return all the mappings in the map
+	public Set<Map.Entry<K,V>> allMaps();
 }

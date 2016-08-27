@@ -3,6 +3,7 @@ package clustervmac.realtimedb;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.Map;
+import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
@@ -58,5 +59,9 @@ public class DBTreeMap<K,V> implements DBMap<K,V> {
 	public Collection<Map.Entry<K, V>> subMap(K fromKey, K toKey){
 		SortedMap<K,V> subSortedMap = treeMap.subMap(fromKey,toKey);
 		return subSortedMap.entrySet();
+	}
+	// return all the mappings in the map
+	public Set<Map.Entry<K,V>> allMaps(){
+		return treeMap.entrySet();
 	}
 }

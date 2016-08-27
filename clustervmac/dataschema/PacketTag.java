@@ -1,6 +1,6 @@
 package clustervmac.dataschema;
 
-public class PacketTag {
+public class PacketTag implements Comparable<PacketTag>{
 	private String sup_rate ;
 	private String ext_sup_rate;
 	private String HT_cap;
@@ -9,6 +9,21 @@ public class PacketTag {
 	private String vendor1;
 	private String vendor2;
 	private String vendor_EPI_HT;
+
+	public PacketTag(String[] strArr){
+		sup_rate = strArr[0];
+		ext_sup_rate = strArr[1];
+		HT_cap = strArr[2];
+		ext_cap = strArr[3];
+		//interworking = strArr[4];
+		vendor1 = strArr[4];
+		vendor2 = strArr[5];
+		vendor_EPI_HT = strArr[6];
+	}	
+	
+	public int compareTo(PacketTag tag2) {
+		return 0;
+	}	
 	
 	public String getSup_rate() {
 		return sup_rate;

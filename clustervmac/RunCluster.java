@@ -14,6 +14,10 @@ public class RunCluster {
 		String [] argv = {"C:/project/smartAP/cluster/20160826_12345678901_virmac.csv",};
 		List<Packet> pktList = pkFetcher.fetchPacket(argv);
 		
-		cluster.clusterBYTag(pktList);
+		List<TagGroup> tagGroupList = cluster.clusterBYTag(pktList);
+		for(TagGroup tagGroup:tagGroupList){
+			tagGroup.printLog();
+			System.out.print("\n");
+		}
 	}
 }

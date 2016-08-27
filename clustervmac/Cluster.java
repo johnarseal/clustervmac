@@ -2,7 +2,8 @@ package clustervmac;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.TreeMap;
+import java.util.Map;
+import java.util.HashMap;
 
 import clustervmac.dataschema.MacGroup;
 import clustervmac.dataschema.Packet;
@@ -12,33 +13,28 @@ import clustervmac.dataschema.TimeMacPair;
 
 public class Cluster {
 	private List<Packet> rawList;
-	private TreeMap<PacketTag,TagGroup> tagRecord;
+	private Map<PacketTag,TagGroup> tagRecord;
 	private double maxSpeed;
 	private double maxExistTime;
 	private double threshold;
 	
 	public void init() // init all data
 	{
-
+		tagRecord = new HashMap<PacketTag,TagGroup>();
 	}
 	
 	public List<TagGroup> clusterBYTag(List<Packet> rawList)
 	{
 		List<TagGroup> tagGroupList = new ArrayList<TagGroup>();// to be returned
-		Packet packet;// = new Packet();
 		TagGroup tmpTagGroup;
-		int size = rawList.size();
-		for(int i = 0; i < size; i++)
+		for(Packet packet:rawList)
 		{
-			packet = rawList.get(i);
-			if(!tagRecord.containsKey(packet))
+			PacketTag tmpTag = packet.getPacketTag();
+			tmpTagGroup = tagRecord.get(tmpTag);
+			if(tmpTagGroup == null)
 			{
-				tmpTagGroup = new TagGroup();
+				tmpTagGroup = new TagGroup(tmpTag);
 				tagGroupList.add(tmpTagGroup);
-			}
-			else
-			{
-				tmpTagGroup = tagRecord.get(packet.getPacketTag());
 			}
 			updateTagGroup(tmpTagGroup,packet);
 		}
@@ -46,45 +42,49 @@ public class Cluster {
 	}
 	
 	public void updateTagGroup(TagGroup tagGroup, Packet packet)
-	{
-		MacGroup macGroup;
-		TimeMacPair timeMacPair = new TimeMacPair();
-		if(!tagGroup.getMacRecord().containsKey(packet.getMac_address()))
+	{		
+		TimeMacPair timeMacPair;
+		
+		//we are getting a reference here,
+		//so we don't need to update macRecord if macGroup is already in
+		MacGroup macGroup = tagGroup.macRecord.get(packet.getMac_address());
+		
+		// if the MAC never appeared
+		if(macGroup == null)
 		{
 			macGroup = new MacGroup(packet);
+			tagGroup.macRecord.insert(packet.getMac_address(),macGroup);
+			timeMacPair = new TimeMacPair(packet.getTime(),packet.getMac_address());
+			tagGroup.startTsRecord.insert(timeMacPair, packet.getMac_address());
+			timeMacPair = new TimeMacPair(packet.getTime(),packet.getMac_address());
+			tagGroup.endTsRecord.insert(timeMacPair, packet.getMac_address());
 		}
-		else
-		{
-			macGroup = tagGroup.getMacRecord().get(packet.getMac_address());
-			// update startTsRecord
-			if(macGroup.getBeginTime() > packet.getTime())
+		else{
+			if(packet.getTime() < macGroup.getBeginTime())
 			{
-				timeMacPair.setTime(macGroup.getBeginTime());
-				timeMacPair.setMacAddr(packet.getMac_address());
-				
-				tagGroup.getStartTsRecord().remove(timeMacPair);
+				// update startTsRecord
+				timeMacPair = new TimeMacPair(macGroup.getBeginTime(),packet.getMac_address());
+				tagGroup.startTsRecord.remove(timeMacPair);
 				timeMacPair.setTime(packet.getTime());
-				
-				tagGroup.getStartTsRecord().put(timeMacPair, packet.getMac_address());
-				
+				tagGroup.startTsRecord.insert(timeMacPair, packet.getMac_address());
+				// update macRecord
 				macGroup.setBeginTime(packet.getTime());
+				tagGroup.macRecord.update(packet.getMac_address(),macGroup);
 			}
-			else if(macGroup.getBeginTime() < packet.getTime())
+			if(packet.getTime() > macGroup.getBeginTime())
 			{
-				timeMacPair.setTime(macGroup.getEndTime());
-				timeMacPair.setMacAddr(packet.getMac_address());
-				
-				tagGroup.getEndTsRecord().remove(timeMacPair);
+				// update endTsRecord
+				timeMacPair = new TimeMacPair(macGroup.getEndTime(),packet.getMac_address());
+				tagGroup.endTsRecord.remove(timeMacPair);
 				timeMacPair.setTime(packet.getTime());
-				
-				tagGroup.getEndTsRecord().put(timeMacPair, packet.getMac_address());
-				
+				tagGroup.endTsRecord.insert(timeMacPair, packet.getMac_address());
+				// update macRecord
 				macGroup.setEndTime(packet.getTime());
+				tagGroup.macRecord.update(packet.getMac_address(),macGroup);
 			}
 		}
-		tagGroup.getMacRecord().replace(packet.getMac_address(), macGroup);// replace by key
 	}
-	
+	/*
 	public void clusterByElimination(TagGroup tagGroup)
 	{
 		TimeMacPair curTimeMacPair = new TimeMacPair();
@@ -112,8 +112,8 @@ public class Cluster {
 				// When choosing candidates for the next mac address of the current mac
 				// the next's start is larger than current end, but shouldn't be too big
 				
-				/*cantidates = tagGroup.getStartTsRecord().find(time >
-				curTimeMacPair.time and time < curTimeMacPair.time + maxSilent);*/
+				/cantidates = tagGroup.getStartTsRecord().find(time >
+				//curTimeMacPair.time and time < curTimeMacPair.time + maxSilent);
 				flag = 0;
 				// iterate through candidates
 				for(int i = 0; i < candidates.size(); i++)
@@ -126,13 +126,13 @@ public class Cluster {
 						continue;
 					// if it is a frequent mac address change, eliminate
 					
-					/*if (curTimeMacPair.macAddr.prevGap < threshold) and (timeGap < threshold):
-						continue*/
+					//if (curTimeMacPair.macAddr.prevGap < threshold) and (timeGap < threshold):
+					//	continue
 					
 					// when reach here, the candidate is valid
 					// the record method can be either writing to database or to file
 					System.out.println("curTimeMacPair.macAddr.next is candidate.macAddr");
-					/*candidate.macAddr.prevGap = timeGap*/
+					//candidate.macAddr.prevGap = timeGap
 					timeMacPair.setMacAddr(candidate.getMacAddr());
 					timeMacPair.setTime(candidate.getBeginTime());
 					tagGroup.getStartTsRecord().remove(timeMacPair);
@@ -147,5 +147,5 @@ public class Cluster {
 				tagGroup.getEndTsRecord().remove(currentMacGroup);
 			}
 		}
-	}
+	}*/
 }

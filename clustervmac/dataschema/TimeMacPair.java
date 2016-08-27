@@ -1,20 +1,43 @@
 package clustervmac.dataschema;
 
-public class TimeMacPair {
-	private double time;
-	private String macAddr;
+public class TimeMacPair implements Comparable<TimeMacPair>{
+	private Long time;
+	private Long macAddr;
 	
-	public double getTime() {
+	public TimeMacPair(Long t,Long m){
+		time = t;
+		macAddr = m;
+	}
+	
+	public Long getTime() {
 		return time;
 	}
-	public void setTime(double time) {
+	public void setTime(Long time) {
 		this.time = time;
 	}
-	public String getMacAddr() {
+	public Long getMacAddr() {
 		return macAddr;
 	}
-	public void setMacAddr(String macAddr) {
+	public void setMacAddr(Long macAddr) {
 		this.macAddr = macAddr;
 	}
 	
+	public int compareTo(TimeMacPair pair2) {
+		if(this.time != pair2.time){
+			if(this.time > pair2.time){
+				return 1;
+			}
+			else{
+				return -1;
+			}
+		}
+		else{
+			if(this.macAddr > pair2.macAddr){
+				return 1;
+			}
+			else{
+				return -1;
+			}			
+		}
+	}
 }

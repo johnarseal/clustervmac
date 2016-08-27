@@ -5,25 +5,29 @@ public class Packet {
 	private Long time;
 	private Long mac_address;
 	private Location location;
+	private String tagPresent;
 	private PacketTag packetTag;
 	
 	public Packet(String src,String[] strArr){
 		if(src == "csv"){
 			this.time = Long.parseLong(strArr[0]);
 			this.mac_address = Long.decode("0x"+strArr[2]);
-			this.mac_address = Long.decode("0x"+strArr[0]);
-			this.mac_address = Long.decode("0x"+strArr[0]);
-			this.mac_address = Long.decode("0x"+strArr[0]);
+			this.tagPresent = strArr[4];
+			packetTag = new PacketTag(Arrays.copyOfRange(strArr,5,12));
 			//this.time = Long.parseLong(strArr[0]);
 		}
 	}
 	
-	public double getTime() {
+	public Long getTime() {
 		return time;
 	}
 	public void setTime(Long time) {
 		this.time = time;
 	}
+
+	public String getTagPresent() {
+		return tagPresent;
+	}	
 	
 	public Long getMac_address() {
 		return mac_address;

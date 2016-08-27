@@ -1,12 +1,13 @@
 package clustervmac.dataschema;
 
 public class MacGroup {
-	private String macAddr;
-	private double beginTime;
-	private double endTime;
+	private Long macAddr;
+	private Long beginTime;
+	private Long endTime;
 	private Location beginLoc;	//begin location (actually x,y two variables)
 	private Location endLoc;		//end location
-	
+	private Long beginLocTime;
+	private Long endLocTime;
 	
 	public MacGroup(Packet packet) {
 		this.macAddr = packet.getMac_address();
@@ -14,27 +15,26 @@ public class MacGroup {
 		this.endTime = packet.getTime();
 		this.beginLoc = packet.getLocation();
 		this.endLoc = packet.getLocation();
-		
 	}
 	public MacGroup() {
 		// TODO Auto-generated constructor stub
 	}
-	public String getMacAddr() {
+	public Long getMacAddr() {
 		return macAddr;
 	}
-	public void setMacAddr(String macAddr) {
+	public void setMacAddr(Long macAddr) {
 		this.macAddr = macAddr;
 	}
-	public double getBeginTime() {
+	public Long getBeginTime() {
 		return beginTime;
 	}
-	public void setBeginTime(double beginTime) {
+	public void setBeginTime(Long beginTime) {
 		this.beginTime = beginTime;
 	}
-	public double getEndTime() {
+	public Long getEndTime() {
 		return endTime;
 	}
-	public void setEndTime(double endTime) {
+	public void setEndTime(Long endTime) {
 		this.endTime = endTime;
 	}
 	public Location getBeginLoc() {
@@ -49,6 +49,16 @@ public class MacGroup {
 	public void setEndLoc(Location endLoc) {
 		this.endLoc = endLoc;
 	}
-	
-	
+	public Long getBeginLocTime() {
+		return beginLocTime;
+	}
+	public void setBeginLocTime(Long beginLocTime) {
+		this.beginLocTime = beginLocTime;
+	}
+	public Long getEndLocTime() {
+		return endLocTime;
+	}
+	public void setEndLocTime(Long endLocTime) {
+		this.endLocTime = endLocTime;
+	}	
 }
