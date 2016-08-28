@@ -18,8 +18,7 @@ public class Cluster {
 	private double maxExistTime;
 	private double threshold;
 	
-	public void init() // init all data
-	{
+	public Cluster(){
 		tagRecord = new HashMap<PacketTag,TagGroup>();
 	}
 	
@@ -27,17 +26,23 @@ public class Cluster {
 	{
 		List<TagGroup> tagGroupList = new ArrayList<TagGroup>();// to be returned
 		TagGroup tmpTagGroup;
+		int cluNum = 0;
 		for(Packet packet:rawList)
 		{
 			PacketTag tmpTag = packet.getPacketTag();
 			tmpTagGroup = tagRecord.get(tmpTag);
 			if(tmpTagGroup == null)
 			{
+				cluNum += 1;
+				System.out.print("New Tag:");
+				tmpTag.printLog();
+				//System.out.println("new MAC:"+Long.toHexString(packet.getMac_address()));
 				tmpTagGroup = new TagGroup(tmpTag);
 				tagGroupList.add(tmpTagGroup);
 			}
 			updateTagGroup(tmpTagGroup,packet);
 		}
+		System.out.println(cluNum);
 		return tagGroupList;
 	}
 	

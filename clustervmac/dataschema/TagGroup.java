@@ -9,7 +9,7 @@ public class TagGroup {
 	// For every tag group,
 	// we use the structure 'treeMap' as a dynamic database(key=>value dictionary)
 	// to implement CURD(create,update,read,delete)
-	// It can be a realtime database, or an AVL tree or red-black tree in Java and C++
+	// It can be a real-time database, or an AVL tree or red-black tree in Java and C++
 	//
 	public DBMap<Long,MacGroup> macRecord;		// mac record table
 	public DBMap<TimeMacPair,Long> startTsRecord;  // start Timestamp table
@@ -17,6 +17,9 @@ public class TagGroup {
 	
 	public TagGroup(PacketTag tag){
 		packetTag = tag;
+		macRecord = new DBTreeMap<Long,MacGroup>();
+		startTsRecord = new DBTreeMap<TimeMacPair,Long>();
+		endTsRecord = new DBTreeMap<TimeMacPair,Long>();
 	}
 
 	public PacketTag getPacketTag() {
