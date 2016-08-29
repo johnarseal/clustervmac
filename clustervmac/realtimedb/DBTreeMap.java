@@ -64,4 +64,14 @@ public class DBTreeMap<K,V> implements DBMap<K,V> {
 	public Set<Map.Entry<K,V>> allMaps(){
 		return treeMap.entrySet();
 	}
+	
+	// Returns a key-value mapping associated with the least key greater than or equal to the given key, or null if there is no such key.
+	public Map.Entry<K,V> ceilingEntry(K key){
+		return treeMap.ceilingEntry(key);
+	}
+	// Returns a key-value mapping associated with the greatest key less than or equal to the given key, or null if there is no such key.
+	public Map.Entry<K,V> floorEntry(K key){
+		return treeMap.floorEntry(key);
+	}
+	
 }

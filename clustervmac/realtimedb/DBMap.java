@@ -25,4 +25,9 @@ public interface DBMap <K,V> {
 	public Map.Entry<K, V> lastEnt();
 	// return all the mappings in the map
 	public Set<Map.Entry<K,V>> allMaps();
+	// Returns a key-value mapping associated with the least key greater than or equal to the given key, or null if there is no such key.
+	public Map.Entry<K,V> ceilingEntry(K key);
+	// Returns a key-value mapping associated with the greatest key less than or equal to the given key, or null if there is no such key.
+	public Map.Entry<K,V> floorEntry(K key);
+	
 }

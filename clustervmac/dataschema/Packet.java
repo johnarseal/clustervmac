@@ -12,6 +12,7 @@ public class Packet {
 			this.time = Long.parseLong(strArr[0]);
 			this.mac_address = Long.decode("0x"+strArr[2]);
 			packetTag = new PacketTag(strArr[4],Arrays.copyOfRange(strArr,5,12));
+			location = null;
 		}
 	}
 	

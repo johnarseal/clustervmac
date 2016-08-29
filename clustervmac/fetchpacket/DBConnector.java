@@ -32,6 +32,7 @@ public class DBConnector {
 		}
 		dbType = database;
 	}
+	
 	public void connect(String addr, String usr, String pwd){
 		if(dbType == "PostgreSQL"){
 	        try {
@@ -61,6 +62,13 @@ public class DBConnector {
 			System.exit(1);
 		}
 	}
+	
+	public void reConnect(){
+		if(dbAddr != null && dbUsr != null  && dbPwd != null){
+			connect(dbAddr,dbUsr,dbPwd);
+		}
+	}
+	
 	public ResultSet execute(String sql){
 		ResultSet rs = null;
 		try {
@@ -70,5 +78,17 @@ public class DBConnector {
 			e.printStackTrace();
 		}
 		return rs;
+	}
+	
+	public void close(){
+		if(stmt != null){
+			try{
+				stmt.close();
+			}
+			catch (SQLException e){
+				// TODO Auto-generated catch block
+				e.printStackTrace();			
+			}
+		}
 	}
 }

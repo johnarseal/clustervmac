@@ -6,8 +6,6 @@ public class MacGroup {
 	private Long endTime;
 	private Location beginLoc;	//begin location (actually x,y two variables)
 	private Location endLoc;		//end location
-	private Long beginLocTime;
-	private Long endLocTime;
 	
 	public MacGroup(Packet packet) {
 		this.macAddr = packet.getMac_address();
@@ -49,16 +47,4 @@ public class MacGroup {
 	public void setEndLoc(Location endLoc) {
 		this.endLoc = endLoc;
 	}
-	public Long getBeginLocTime() {
-		return beginLocTime;
-	}
-	public void setBeginLocTime(Long beginLocTime) {
-		this.beginLocTime = beginLocTime;
-	}
-	public Long getEndLocTime() {
-		return endLocTime;
-	}
-	public void setEndLocTime(Long endLocTime) {
-		this.endLocTime = endLocTime;
-	}	
 }

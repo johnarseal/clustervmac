@@ -31,11 +31,34 @@ public class TagGroup {
 	}
 	
 	public void printLog(){
+		Location loc;
 		Set<Map.Entry<Long,MacGroup>> s = macRecord.allMaps();
 		for(Map.Entry<Long,MacGroup> ent:s){
-			System.out.println("MAC:"+ent.getKey());
-			System.out.print("begin:"+ent.getValue().getBeginTime());
-			System.out.print(",end:"+ent.getValue().getEndTime());
+			System.out.println("MAC:"+Long.toHexString(ent.getKey()));
+			MacGroup curMacGroup = ent.getValue();
+			System.out.print("begin:"+curMacGroup.getBeginTime());
+			System.out.print(",end:"+curMacGroup.getEndTime());
+			
+			// log location
+			loc = curMacGroup.getBeginLoc();
+			System.out.print(",beginLoc:");
+			if(loc == null){
+				System.out.print("None");
+			}
+			else{
+				System.out.print(loc.getX() + "," + loc.getY());
+				System.out.print(",beginLocTime:" + loc.getTs());
+			}
+			
+			loc = curMacGroup.getEndLoc();
+			System.out.print(",endLoc:");
+			if(loc == null){
+				System.out.print("None");
+			}
+			else{
+				System.out.print(loc.getX() + "," + loc.getY());
+				System.out.print(",endLocTime:" + loc.getTs());
+			}
 			System.out.print("\n");
 		}
 	}
