@@ -22,10 +22,6 @@ public class CSVPacketFetcher implements PacketFetcher {
 		List<String []> rawPacketList = csvReader.readCSV(filePath);
 		List<Packet> PacketList = assemblePacket("csv",rawPacketList);
 		return PacketList;
-		//DBConnector dbCon = new DBConnector("PostgreSQL");
-		//dbCon.connect("egz209.ust.hk:7023/rsa_dev", "root", "v1mZo48q2VdjqSn");
-		//sql = "SELECT * FROM "
-		//ResultSet rs = dbCon.execute(sql)
 	}	
 	
 }
