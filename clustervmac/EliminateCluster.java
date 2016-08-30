@@ -1,75 +1,101 @@
 package clustervmac;
+import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 import clustervmac.dataschema.*;
 
 public class EliminateCluster {
 	
-	private double maxSpeed;
-	private double maxExistTime;
-	private double threshold;
+	private double maxSpeed;			//unit: cm/s
+	private Long maxExistTime;
 	
-	public void eliminate(List<TagGroup> tagGroupList){		
-		/*
-			TimeMacPair curTimeMacPair = new TimeMacPair();
-			TimeMacPair timeMacPair = new TimeMacPair();
-			String macAddr;
-			MacGroup currentMacGroup = new MacGroup();
-			List<MacGroup> candidates = new ArrayList<MacGroup>();
-			MacGroup candidate;
-			int flag;
-			double timeGap;
-			double dist;
+	// the largest gap between a MAC address and it's next
+	private Long maxSilentTime;
+	// the smallest gap between a MAC address and it's next
+	private Long minGapTime;
+	public EliminateCluster(){
+		maxSilentTime = 100L;
+		minGapTime = 1L;
+		maxExistTime = 500L;		//in the unit of second
+		// max speed is 5m/s
+		maxSpeed = 500;
+		
+	}
+	
+	
+	public void eliminate(List<TagGroup> tagGroupList){
+		Collection<Map.Entry<TimeMacPair, Long>> candidates;
+		// used as boundary for finding submap
+		TimeMacPair CeilBondPair;
+		TimeMacPair floorBondPair;
+		TimeMacPair curPair = null;
+		TimeMacPair delPair = null;
+		long curTS = System.currentTimeMillis() / 1000L;
+		for(TagGroup tagGroup:tagGroupList){
 			
-			while(tagGroup.getEndTsRecord().size() != 0)
-			{
-				// select the mac address that hasn't appear for the longest time
-				// as the current mac addres that seeking next
-				curTimeMacPair = tagGroup.getEndTsRecord().firstKey();
-				macAddr = tagGroup.getEndTsRecord().get(curTimeMacPair);
-				currentMacGroup = tagGroup.getMacRecord().get(macAddr);
-				// if endTime of this mac address is long enough before
-				// assume it has changed and will never appear again, 
-				//so let's find it's next
-				if((System.currentTimeMillis() - curTimeMacPair.getTime()) > maxExistTime)
-				{
-					// When choosing candidates for the next mac address of the current mac
-					// the next's start is larger than current end, but shouldn't be too big
-					
-					/cantidates = tagGroup.getStartTsRecord().find(time >
-					//curTimeMacPair.time and time < curTimeMacPair.time + maxSilent);
-					flag = 0;
-					// iterate through candidates
-					for(int i = 0; i < candidates.size(); i++)
-					{
-						candidate = candidates.get(i);
-						dist = candidate.getEndLoc().dist(currentMacGroup.getBeginLoc());
-						timeGap = candidate.getBeginTime() - curTimeMacPair.getTime();
-						// if it is a fast moving, eliminate
-						if((dist / timeGap) > maxSpeed)
+			if(tagGroup.endTsRecord.firstEnt() == null){
+				continue;
+			}
+
+			while(tagGroup.endTsRecord.firstEnt() != null){
+				//current mac/pair that is seeking next
+				curPair = tagGroup.endTsRecord.firstEnt().getKey();
+				if((curTS - curPair.getTime()) < maxExistTime){
+					// if the smallest MAC pair in endTSRecord is not far before enough
+					// we are breaking from the whole taggroup
+					break;
+				}
+				MacGroup curMacGroup = tagGroup.macRecord.get(curPair.getMacAddr());
+				if(curMacGroup == null){
+					// this should not be reached
+					System.out.println("TagGroup not coherenced0");
+					break;
+				}
+				
+				// the boundary for finding submap
+				floorBondPair = tagGroup.endTsRecord.firstEnt().getKey();
+				floorBondPair.setTime(floorBondPair.getTime() + minGapTime);
+				CeilBondPair = new TimeMacPair(floorBondPair);
+				CeilBondPair.setTime(floorBondPair.getTime() - minGapTime + maxSilentTime);
+				
+				
+				//the candidates of the next MAC of the cur MAC
+				candidates = tagGroup.startTsRecord.subMap(floorBondPair, CeilBondPair);
+				boolean find = false;
+				for(Map.Entry<TimeMacPair, Long> candid:candidates){
+					Long candMac = candid.getKey().getMacAddr();
+					MacGroup candMacGroup = tagGroup.macRecord.get(candMac);
+					if(candMacGroup == null){
+						// this should not be reached
+						System.out.println("TagGroup not coherenced1");
+					}
+					else{
+						double speed = candMacGroup.getBeginLoc().speed(curMacGroup.getEndLoc());
+						if(speed > maxSpeed){
+							//DEBUG
+							System.out.println("a candidate is eliminated because speed:" + speed + " is too big");
 							continue;
-						// if it is a frequent mac address change, eliminate
-						
-						//if (curTimeMacPair.macAddr.prevGap < threshold) and (timeGap < threshold):
-						//	continue
-						
-						// when reach here, the candidate is valid
-						// the record method can be either writing to database or to file
-						System.out.println("curTimeMacPair.macAddr.next is candidate.macAddr");
-						//candidate.macAddr.prevGap = timeGap
-						timeMacPair.setMacAddr(candidate.getMacAddr());
-						timeMacPair.setTime(candidate.getBeginTime());
-						tagGroup.getStartTsRecord().remove(timeMacPair);
-						flag = 1;
+						}
+						//if reached here, the candidate is not eliminated, so find
+						System.out.println("the next of MAC " + Long.toHexString(curPair.getMacAddr()) + " is " + Long.toHexString(candMac));
+						find = true;
+						delPair = candid.getKey();
 						break;
 					}
-					if(flag == 0)
-					{
-						System.out.println("curTimeMacPair.macAddr.next is NULL");
-					}
-					tagGroup.getStartTsRecord().remove(currentMacGroup);
-					tagGroup.getEndTsRecord().remove(currentMacGroup);
 				}
-			}*/		
+				if(find){
+					//delete the next from starTS record
+					tagGroup.startTsRecord.remove(delPair);
+				}
+				else{
+					System.out.println("the next of MAC " + Long.toHexString(curPair.getMacAddr()) + " is NULL");
+				}
+				//delete the current pair because it has found its next
+				tagGroup.macRecord.remove(curPair.getMacAddr());
+				tagGroup.startTsRecord.remove(curPair);
+				tagGroup.endTsRecord.remove(curPair);
+			}
+		}
 	}
 }

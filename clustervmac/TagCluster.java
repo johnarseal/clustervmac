@@ -31,7 +31,7 @@ public class TagCluster {
 		//debug use
 		int cluNum = 0;
 		for(Packet packet:rawList)
-		{		
+		{
 			PacketTag tmpTag = packet.getPacketTag();
 			
 			//renew loc fetch time
@@ -53,13 +53,13 @@ public class TagCluster {
 			}
 			updateTagGroup(tmpTagGroup,packet);
 		}
-		System.out.println(cluNum);
+		System.out.println("tag cluster num:"+cluNum);
 		mergeLoc(minFetchLocTime,maxFetchLocTime);
 		return tagGroupList;
 	}
 	
 	public void updateTagGroup(TagGroup tagGroup, Packet packet)
-	{		
+	{
 		TimeMacPair timeMacPair;
 		//we are getting a reference here,
 		//so we don't need to update macRecord if macGroup is already in
@@ -78,6 +78,7 @@ public class TagCluster {
 		else{
 			if(packet.getTime() < macGroup.getBeginTime())
 			{
+				//System.out.println("here0");
 				// update startTsRecord
 				timeMacPair = new TimeMacPair(macGroup.getBeginTime(),packet.getMac_address());
 				tagGroup.startTsRecord.remove(timeMacPair);
@@ -87,11 +88,14 @@ public class TagCluster {
 				macGroup.setBeginTime(packet.getTime());
 				tagGroup.macRecord.update(packet.getMac_address(),macGroup);
 			}
-			if(packet.getTime() > macGroup.getBeginTime())
+			if(packet.getTime() > macGroup.getEndTime())
 			{
+				//System.out.println("here1");
 				// update endTsRecord
 				timeMacPair = new TimeMacPair(macGroup.getEndTime(),packet.getMac_address());
-				tagGroup.endTsRecord.remove(timeMacPair);
+				if(tagGroup.endTsRecord.remove(timeMacPair) == null){
+					System.out.println("why");
+				}
 				timeMacPair.setTime(packet.getTime());
 				tagGroup.endTsRecord.insert(timeMacPair, packet.getMac_address());
 				// update macRecord

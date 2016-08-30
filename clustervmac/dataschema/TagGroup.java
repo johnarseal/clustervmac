@@ -1,6 +1,7 @@
 package clustervmac.dataschema;
 
 import clustervmac.realtimedb.*;
+
 import java.util.Set;
 import java.util.Map;
 public class TagGroup {

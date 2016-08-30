@@ -19,10 +19,11 @@ public class Cluster {
 		List<TagGroup> tagGroupList = tagCluster.clusterByTag(pktList);
 		
 		//log and print
-		for(TagGroup tagGroup:tagGroupList){
-			tagGroup.printLog();
-			System.out.print("\n");
-		}
+		//System.out.println("log in main");
+		//for(TagGroup tagGroup:tagGroupList){
+		//	tagGroup.printLog();
+		//	System.out.print("\n");
+		//}
 		
 		EliminateCluster elimCluster = new EliminateCluster();
 		elimCluster.eliminate(tagGroupList);

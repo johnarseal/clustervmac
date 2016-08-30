@@ -1,10 +1,14 @@
 package clustervmac.dataschema;
 
 public class Location {
-	private double x;
+	//x,y is directly fetched from database, so in the unit of pixel
+	private double x;		
 	private double y;
 	//the time stamp of this location
 	private Long ts;
+	
+	//how many centimeters one pixel equals to
+	private static final double pixScale = 1.1;
 	
 	public Location(double tx,double ty,Long t_ts){
 		x = tx;
@@ -32,8 +36,11 @@ public class Location {
 	public void setY(double y) {
 		this.y = y;
 	}
-	public double dist(Location loc)
+	
+	//in the unit of cm/s
+	public double speed(Location loc)
 	{
-		return 0;
+		double pixDist = Math.sqrt(Math.pow(this.x-loc.getX(),2) + Math.pow(this.y-loc.getY(),2));
+		return (pixDist * pixScale) / (this.getTs() - loc.getTs());
 	}
 }
