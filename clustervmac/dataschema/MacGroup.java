@@ -6,13 +6,29 @@ public class MacGroup {
 	private Long endTime;
 	private Location beginLoc;	//begin location (actually x,y two variables)
 	private Location endLoc;		//end location
+	private Long prevGap;		//the previous time gap of this mac
+	private Long leadMac;		//the first mac addr of this MAC series (e.g. A->B->C, C's leadMac is A)
 	
 	public MacGroup(Packet packet) {
-		this.macAddr = packet.getMac_address();
-		this.beginTime = packet.getTime();
-		this.endTime = packet.getTime();
-		this.beginLoc = packet.getLocation();
-		this.endLoc = packet.getLocation();
+		macAddr = packet.getMac_address();
+		beginTime = packet.getTime();
+		endTime = packet.getTime();
+		beginLoc = packet.getLocation();
+		endLoc = packet.getLocation();
+		leadMac = null;
+		prevGap = null;
+	}
+	public Long getPrevGap() {
+		return prevGap;
+	}
+	public void setPrevGap(Long prevGap) {
+		this.prevGap = prevGap;
+	}
+	public Long getLeadMac() {
+		return leadMac;
+	}
+	public void setLeadMac(Long leadMac) {
+		this.leadMac = leadMac;
 	}
 	public MacGroup() {
 		// TODO Auto-generated constructor stub

@@ -1,4 +1,4 @@
-package clustervmac.fetchpacket;
+package clustervmac.dbconnection;
 
 import java.sql.Connection; 
 import java.sql.DriverManager; 

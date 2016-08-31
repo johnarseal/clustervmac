@@ -5,8 +5,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import clustervmac.dataschema.*;
+import clustervmac.dbconnection.DBConnector;
 import clustervmac.realtimedb.*;
-import clustervmac.fetchpacket.DBConnector;
 
 
 public class TagCluster {
