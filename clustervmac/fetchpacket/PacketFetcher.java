@@ -7,4 +7,5 @@ import clustervmac.dataschema.Packet;
 public interface PacketFetcher {
 
 	public List<Packet> fetchPacket(String[] argv);
+	public List<Packet> filterPacket(List<Packet> pktList);
 }

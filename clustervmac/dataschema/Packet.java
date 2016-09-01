@@ -1,11 +1,9 @@
 package clustervmac.dataschema;
 import java.util.*;
 
-public class Packet {
+public class Packet extends BasicPacket{
 	private Long time;
-	private Long mac_address;
 	private Location location;
-	private PacketTag packetTag;
 	
 	public Packet(String src,String[] strArr){
 		if(src == "csv"){
@@ -23,26 +21,18 @@ public class Packet {
 		this.time = time;
 	}
 	
-	public Long getMac_address() {
-		return mac_address;
-	}
-	public void setMac_address(Long mac_address) {
-		this.mac_address = mac_address;
-	}
-	
 	public Location getLocation() {
 		return location;
 	}
 	public void setLocation(Location location) {
 		this.location = location;
 	}
-	public PacketTag getPacketTag()
-	{
-		return packetTag;
+	public TimeMacPair getTimeMacPair(){
+		TimeMacPair tmP = new TimeMacPair(this.time,this.mac_address);
+		return tmP;
 	}
-	public void setPacketTag(PacketTag packetTag)
-	{
-		this.packetTag = packetTag;
+	public void printTagLog(){
+		System.out.print("mac:"+Long.toHexString(this.mac_address)+" tag:");
+		this.packetTag.printLog();
 	}
-	
 }

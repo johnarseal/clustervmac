@@ -49,4 +49,22 @@ public class TimeMacPair implements Comparable<TimeMacPair>{
 			}			
 		}
 	}
+	
+	@Override
+	public boolean equals(Object o){
+		TimeMacPair tmp2 = (TimeMacPair)o;
+		if(!tmp2.macAddr.equals(this.macAddr)) return false;
+		if(!tmp2.time.equals(this.time)) return false;
+		
+		return true;
+	}
+	
+	@Override
+	public int hashCode(){
+		return (int)(this.macAddr + this.time);
+	}
+	
+	public void printLog(){
+		System.out.println("mac:"+this.macAddr+",ts:"+this.time);
+	}
 }

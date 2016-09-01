@@ -1,4 +1,4 @@
-package clustervmac.storecluster;
+package clustervmac.storer;
 
 import clustervmac.dataschema.MacGroup;
 import clustervmac.dbconnection.DBConnector;

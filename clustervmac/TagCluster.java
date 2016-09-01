@@ -15,8 +15,8 @@ public class TagCluster {
 	
 	
 	public TagCluster(){
-		tagRecord = new HashMap<PacketTag,TagGroup>();
-		tagGroupList = new ArrayList<TagGroup>();// to be returned		
+		tagRecord = new HashMap<>();
+		tagGroupList = new ArrayList<>();// to be returned		
 	}
 	
 	public List<TagGroup> clusterByTag(List<Packet> rawList)

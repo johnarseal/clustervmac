@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import clustervmac.dataschema.*;
-import clustervmac.storecluster.ClusterStorer;
+import clustervmac.storer.ClusterStorer;
 
 public class EliminateCluster {
 	
@@ -84,7 +84,6 @@ public class EliminateCluster {
 							System.out.println("a candidate is eliminated because speed:" + speed + " is too big");
 							continue;
 						}
-						System.out.println("the MAC " + Long.toHexString(curMacGroup.getMacAddr()) + " prevGap is " + curMacGroup.getPrevGap());
 						// the fast flip condition (MAC address changes 3 times in 2 * flipGapTime seconds)
 						if((curMacGroup.getPrevGap() != null) && (curMacGroup.getPrevGap() < flipGapTime) && (candMacGroup.getBeginTime() - curMacGroup.getEndTime() < flipGapTime)){
 							//DEBUG
@@ -117,7 +116,7 @@ public class EliminateCluster {
 					//System.out.println("the next of MAC " + Long.toHexString(curPair.getMacAddr()) + " is NULL");
 				}
 				//debugging
-				cluStorer.storeCluster(curMacGroup);
+				//cluStorer.storeCluster(curMacGroup);
 				if(curMacGroup.getLeadMac() == null){
 					System.out.println("Deleting MAC:" + Long.toHexString(curPair.getMacAddr()) + ", its lead MAC is null");					
 				}

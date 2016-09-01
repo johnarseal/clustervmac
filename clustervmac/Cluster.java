@@ -16,7 +16,13 @@ public class Cluster {
 		String [] argv = {"C:/project/smartAP/cluster/virmac_test.csv",};
 		List<Packet> pktList = pkFetcher.fetchPacket(argv);
 		
-		List<TagGroup> tagGroupList = tagCluster.clusterByTag(pktList);
+		//since it's possible that a same mac will have different tags
+		//we have to clean and filter it first
+		List<Packet> cluPktList = pkFetcher.filterPacket(pktList);
+		
+		System.out.println(cluPktList.size());
+		
+		List<TagGroup> tagGroupList = tagCluster.clusterByTag(cluPktList);
 		
 		//log and print
 		//System.out.println("log in main");
