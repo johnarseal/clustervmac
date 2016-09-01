@@ -91,6 +91,7 @@ public class EliminateCluster {
 							continue;							
 						}
 						//if reached here, the candidate is not eliminated, so find
+						//System.out.println("the next of MAC " + Long.toHexString(curPair.getMacAddr()) + " is " + Long.toHexString(candMac));
 						find = true;
 						delPair = candid.getKey();
 						break;

@@ -88,7 +88,7 @@ public class DBConnector {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void close(){
 		if(stmt != null){
 			try{
