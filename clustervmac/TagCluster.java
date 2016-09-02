@@ -148,11 +148,7 @@ public class TagCluster {
 		// connect to db and fetch data
 		DBConnector conn = new DBConnector("PostgreSQL");
 		conn.connect("egz209.ust.hk:7023/rsa_dev", "root", "v1mZo48q2VdjqSn");
-<<<<<<< HEAD
 		String sql = "SELECT * FROM location_results WHERE areaid = 'hkust_1002'"
-=======
-		String sql = "SELECT * FROM mtrec_test WHERE areaid = 'mtrec_1'"
->>>>>>> 4e843a0b423d766a35d4fd8bc7a176b35a917c96
 				+ " AND ts >= " + startTS*1000 + " AND ts <= " + endTS*1000
 				+ " AND (did::BIT(48) & x'020000000000'::BIT(48)) != 0::BIT(48)";
 		ResultSet raw = conn.execute(sql);

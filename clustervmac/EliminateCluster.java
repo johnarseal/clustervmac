@@ -52,6 +52,7 @@ public class EliminateCluster {
 					// we are breaking from the whole taggroup
 					break;
 				}
+				System.out.println("finding next for: " + Long.toHexString(curPair.getMacAddr()));
 				MacGroup curMacGroup = tagGroup.macRecord.get(curPair.getMacAddr());
 				if(curMacGroup == null){
 					// this should not be reached
@@ -69,8 +70,11 @@ public class EliminateCluster {
 				//the candidates of the next MAC of the cur MAC
 				candidates = tagGroup.startTsRecord.subMap(floorBondPair, CeilBondPair);
 				boolean find = false;
+				int candNum = 0;
 				for(Map.Entry<TimeMacPair, Long> candid:candidates){
 					Long candMac = candid.getKey().getMacAddr();
+					candNum++;
+					System.out.println("candidate" + candNum + ": " + Long.toHexString(candMac));
 					MacGroup candMacGroup = tagGroup.macRecord.get(candMac);
 					if(candMacGroup == null){
 						// this should not be reached
@@ -98,6 +102,7 @@ public class EliminateCluster {
 					}
 				}
 				if(find){
+					System.out.print("find! ");
 					//update next's leadMac
 					MacGroup delMacG = tagGroup.macRecord.get(delPair.getMacAddr());
 					if(curMacGroup.getLeadMac() == null){
@@ -112,7 +117,15 @@ public class EliminateCluster {
 					tagGroup.startTsRecord.remove(delPair);
 				}
 				//debugging
-				//cluStorer.storeCluster(curMacGroup);
+				System.out.println("the next of " + Long.toHexString(curPair.getMacAddr()) + " is " + Long.toHexString(delPair.getMacAddr()));
+				if(curMacGroup.getLeadMac() == null){
+					System.out.println("deleting " + Long.toHexString(curPair.getMacAddr()) + ", its leadmac is null");			
+				}
+				else{
+					System.out.println("deleting " + Long.toHexString(curPair.getMacAddr()) + ", its leadmac is " + Long.toHexString(curMacGroup.getLeadMac()));			
+				}
+				
+				cluStorer.storeCluster(curMacGroup);
 				
 				//delete the current pair because it has found its next
 				tagGroup.macRecord.remove(curPair.getMacAddr());

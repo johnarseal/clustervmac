@@ -25,11 +25,14 @@ public class Cluster {
 		List<TagGroup> tagGroupList = tagCluster.clusterByTag(cluPktList);
 		
 		//log and print
-		//System.out.println("log in main");
-		//for(TagGroup tagGroup:tagGroupList){
-		//	tagGroup.printLog();
-		//	System.out.print("\n");
-		//}
+		/*
+		System.out.println("log in main");
+		int tagCnt = 0;
+		for(TagGroup tagGroup:tagGroupList){
+			System.out.print("Tag Group " + tagCnt++);
+			tagGroup.printLog();
+			System.out.print("\n");
+		}*/
 		
 		EliminateCluster elimCluster = new EliminateCluster();
 		elimCluster.eliminate(tagGroupList);
