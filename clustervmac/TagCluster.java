@@ -9,6 +9,11 @@ import clustervmac.dbconnection.DBConnector;
 import clustervmac.realtimedb.*;
 
 
+/**
+ * clustering by tag
+ * @author johnzz
+ *
+ */
 public class TagCluster {
 	private Map<PacketTag,TagGroup> tagRecord;
 	private List<TagGroup> tagGroupList;

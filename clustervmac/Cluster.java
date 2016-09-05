@@ -5,6 +5,13 @@ import java.util.List;
 import clustervmac.dataschema.*;
 import clustervmac.fetchpacket.*;
 
+
+/**
+ * Main function of clustering
+ * @author johnzz
+ *
+ */
+
 public class Cluster {
 	public static void main(String[] args) {
 		long startTime = System.nanoTime();

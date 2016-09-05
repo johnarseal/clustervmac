@@ -6,6 +6,13 @@ import java.util.Map;
 import clustervmac.dataschema.*;
 import clustervmac.storer.ClusterStorer;
 
+
+/**
+ * the elimination step in clustering
+ * @author johnzz
+ *
+ */
+
 public class EliminateCluster {
 	
 	private final double maxSpeed;			//unit: cm/s
