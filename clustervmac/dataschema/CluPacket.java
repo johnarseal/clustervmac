@@ -1,15 +1,22 @@
 package clustervmac.dataschema;
 import java.util.*;
 
-public class Packet extends BasicPacket{
+
+/**
+ * CluPacket stands for Cluster Packet: the packet schema used for cluster
+ * @author johnzz
+ *
+ */
+
+public class CluPacket extends BasicCluPacket{
 	private Long time;
 	private Location location;
 	
-	public Packet(String src,String[] strArr){
+	public CluPacket(String src,String[] strArr){
 		if(src == "csv"){
 			this.time = Long.parseLong(strArr[0]);
 			this.mac_address = Long.decode("0x"+strArr[2]);
-			packetTag = new PacketTag(strArr[4],Arrays.copyOfRange(strArr,5,12));
+			packetTag = new CluPacketTag(strArr[4],Arrays.copyOfRange(strArr,5,12));
 			location = null;
 		}
 	}

@@ -1,6 +1,6 @@
 package clustervmac.dataschema;
 
-public class PacketTag{
+public class CluPacketTag{
 /*	private String sup_rate ;
 	private String ext_sup_rate;
 	private String HT_cap;
@@ -14,7 +14,7 @@ public class PacketTag{
 	private final String[] tags;
 	private final int tagNum;
 			
-	public PacketTag(String tagP,String[] strArr){
+	public CluPacketTag(String tagP,String[] strArr){
 		tagPresent = tagP;
 		tags = strArr;
 		tagNum = strArr.length;
@@ -24,7 +24,7 @@ public class PacketTag{
 	public boolean equals(Object o){
 	    if(o == null)	return false;		
 	    if(this == o)	return true;
-	    PacketTag pktO = (PacketTag) o;
+	    CluPacketTag pktO = (CluPacketTag) o;
 	    // first check tag present, then match tags
 	    if(!this.tagPresent.equals(pktO.tagPresent))	return false;
 	    if(this.tagNum != pktO.tagNum)	return false;

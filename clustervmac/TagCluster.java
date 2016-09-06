@@ -15,7 +15,7 @@ import clustervmac.realtimedb.*;
  *
  */
 public class TagCluster {
-	private Map<PacketTag,TagGroup> tagRecord;
+	private Map<CluPacketTag,TagGroup> tagRecord;
 	private List<TagGroup> tagGroupList;
 	
 	
@@ -24,7 +24,7 @@ public class TagCluster {
 		tagGroupList = new ArrayList<>();// to be returned		
 	}
 	
-	public List<TagGroup> clusterByTag(List<Packet> rawList)
+	public List<TagGroup> clusterByTag(List<CluPacket> rawList)
 	{
 		TagGroup tmpTagGroup;
 		//Every time after clustering by tags, renew these two vars
@@ -35,9 +35,9 @@ public class TagCluster {
 		
 		//debug use
 		int cluNum = 0;
-		for(Packet packet:rawList)
+		for(CluPacket packet:rawList)
 		{
-			PacketTag tmpTag = packet.getPacketTag();
+			CluPacketTag tmpTag = packet.getPacketTag();
 			
 			//renew loc fetch time
 			if(packet.getTime() < minFetchLocTime){
@@ -63,7 +63,7 @@ public class TagCluster {
 		return tagGroupList;
 	}
 	
-	public void updateTagGroup(TagGroup tagGroup, Packet packet)
+	public void updateTagGroup(TagGroup tagGroup, CluPacket packet)
 	{
 		TimeMacPair timeMacPair;
 		//we are getting a reference here,

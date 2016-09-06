@@ -104,7 +104,7 @@ public class Probe {
 					int readNum = bis.read(bytes, 0, FILE_READ_BUFFER_LEN);
 					if (readNum == -1)
 						break;
-					Packet packet = new Packet();
+					CluPacket packet = new CluPacket();
 					packet.setVersion(Version.VERSION_2);
 					packet.setType(Type.FILE);
 					ByteBuffer byteBuf = ByteBuffer.allocate(168 + readNum);

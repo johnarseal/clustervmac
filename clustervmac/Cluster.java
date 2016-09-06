@@ -21,11 +21,11 @@ public class Cluster {
 		//fetch the packet from CSV document
 		PacketFetcher pkFetcher = new CSVPacketFetcher();
 		String [] argv = {"C:/project/smartAP/cluster/groundtruthdata/20160901_mint_virmac(10minmod).csv",};
-		List<Packet> pktList = pkFetcher.fetchPacket(argv);
+		List<CluPacket> pktList = pkFetcher.fetchPacket(argv);
 		
 		//since it's possible that a same mac will have different tags
 		//we have to clean and filter it first
-		List<Packet> cluPktList = pkFetcher.filterPacket(pktList);
+		List<CluPacket> cluPktList = pkFetcher.filterPacket(pktList);
 		
 		System.out.println(cluPktList.size());
 		

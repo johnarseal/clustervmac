@@ -10,28 +10,28 @@ import clustervmac.dataschema.*;
 
 public class CSVPacketFetcher implements PacketFetcher {
 
-	public List<Packet> assemblePacket(String src,List<String []> pktStringList){
-		List<Packet> rtPacketList = new ArrayList<Packet>();
-		Packet pkt = null;
+	public List<CluPacket> assemblePacket(String src,List<String []> pktStringList){
+		List<CluPacket> rtPacketList = new ArrayList<CluPacket>();
+		CluPacket pkt = null;
 		for (String[] pktString : pktStringList){
-			pkt = new Packet(src,pktString);
+			pkt = new CluPacket(src,pktString);
 			rtPacketList.add(pkt);
 		}
 		return rtPacketList;
 	}
 	
-	public List<Packet> fetchPacket(String[] argv){
+	public List<CluPacket> fetchPacket(String[] argv){
 		String filePath = argv[0];
 		CSVReader csvReader = new CSVReader();
 		List<String []> rawPacketList = csvReader.readCSV(filePath);
-		List<Packet> PacketList = assemblePacket("csv",rawPacketList);
+		List<CluPacket> PacketList = assemblePacket("csv",rawPacketList);
 		return PacketList;
 	}
 	
-	public List<Packet> filterPacket(List<Packet> pktList){
-		HashMap<BasicPacket,Integer> macTagDict = new HashMap<>();
-		for(Packet pkt:pktList){
-			BasicPacket bpkt = (BasicPacket) pkt;
+	public List<CluPacket> filterPacket(List<CluPacket> pktList){
+		HashMap<BasicCluPacket,Integer> macTagDict = new HashMap<>();
+		for(CluPacket pkt:pktList){
+			BasicCluPacket bpkt = (BasicCluPacket) pkt;
 			Integer curCnt;
 			if((curCnt = macTagDict.get(bpkt)) == null){
 				macTagDict.put(bpkt, 1);
@@ -40,17 +40,17 @@ public class CSVPacketFetcher implements PacketFetcher {
 				macTagDict.put(bpkt, curCnt + 1);
 			}
 		}
-		Set<Map.Entry<BasicPacket,Integer>> macTagSet = macTagDict.entrySet();
-		HashMap<Long,PacketTag> mac2TagDict = new HashMap<>();
-		for(Map.Entry<BasicPacket,Integer> ent:macTagSet){
-			PacketTag oldTag;
+		Set<Map.Entry<BasicCluPacket,Integer>> macTagSet = macTagDict.entrySet();
+		HashMap<Long,CluPacketTag> mac2TagDict = new HashMap<>();
+		for(Map.Entry<BasicCluPacket,Integer> ent:macTagSet){
+			CluPacketTag oldTag;
 			Long curMac = ent.getKey().getMac_address();
 			if((oldTag=mac2TagDict.get(curMac)) == null){
 				mac2TagDict.put(ent.getKey().getMac_address(),ent.getKey().getPacketTag());
 			}
 			else{
 				Integer curCnt = ent.getValue();
-				BasicPacket oldPacket = new BasicPacket(curMac,oldTag);
+				BasicCluPacket oldPacket = new BasicCluPacket(curMac,oldTag);
 				Integer oldCnt = macTagDict.get(oldPacket);
 				if(curCnt > oldCnt){
 					mac2TagDict.put(curMac,ent.getKey().getPacketTag());
@@ -58,8 +58,8 @@ public class CSVPacketFetcher implements PacketFetcher {
 			}
 		}
 		HashMap<TimeMacPair,Integer> tmRecord = new HashMap<>();
-		List<Packet> rtPkList = new ArrayList<>();
-		for(Packet pkt:pktList){
+		List<CluPacket> rtPkList = new ArrayList<>();
+		for(CluPacket pkt:pktList){
 			TimeMacPair curTM = pkt.getTimeMacPair();		
 			
 			if(tmRecord.containsKey(curTM)){

@@ -9,7 +9,7 @@ public class MacGroup {
 	private Long prevGap;		//the previous time gap of this mac
 	private Long leadMac;		//the first mac addr of this MAC series (e.g. A->B->C, C's leadMac is A)
 	
-	public MacGroup(Packet packet) {
+	public MacGroup(CluPacket packet) {
 		macAddr = packet.getMac_address();
 		beginTime = packet.getTime();
 		endTime = packet.getTime();

@@ -5,7 +5,7 @@ import clustervmac.realtimedb.*;
 import java.util.Set;
 import java.util.Map;
 public class TagGroup {
-	private PacketTag packetTag;
+	private CluPacketTag packetTag;
 	//
 	// For every tag group,
 	// we use the structure 'treeMap' as a dynamic database(key=>value dictionary)
@@ -16,18 +16,18 @@ public class TagGroup {
 	public DBMap<TimeMacPair,Long> startTsRecord;  // start Timestamp table
 	public DBMap<TimeMacPair,Long> endTsRecord;	// end Timestamp table	
 	
-	public TagGroup(PacketTag tag){
+	public TagGroup(CluPacketTag tag){
 		packetTag = tag;
 		macRecord = new DBTreeMap<Long,MacGroup>();
 		startTsRecord = new DBTreeMap<TimeMacPair,Long>();
 		endTsRecord = new DBTreeMap<TimeMacPair,Long>();
 	}
 
-	public PacketTag getPacketTag() {
+	public CluPacketTag getPacketTag() {
 		return packetTag;
 	}
 
-	public void setPacketTag(PacketTag packetTag) {
+	public void setPacketTag(CluPacketTag packetTag) {
 		this.packetTag = packetTag;
 	}
 	

@@ -1,9 +1,9 @@
 package clustervmac.dataschema;
 
 // the packet only contains mac address and tag
-public class BasicPacket {
+public class BasicCluPacket {
 	public Long mac_address;
-	public PacketTag packetTag;
+	public CluPacketTag packetTag;
 	
 	public Long getMac_address() {
 		return mac_address;
@@ -12,21 +12,21 @@ public class BasicPacket {
 		this.mac_address = mac_address;
 	}
 	
-	public PacketTag getPacketTag()
+	public CluPacketTag getPacketTag()
 	{
 		return packetTag;
 	}
-	public void setPacketTag(PacketTag packetTag)
+	public void setPacketTag(CluPacketTag packetTag)
 	{
 		this.packetTag = packetTag;
 	}
 	
-	public BasicPacket(){
+	public BasicCluPacket(){
 		mac_address = null;
 		packetTag = null;
 	}
 	
-	public BasicPacket(Long mac,PacketTag tag){
+	public BasicCluPacket(Long mac,CluPacketTag tag){
 		mac_address = mac;
 		packetTag = tag;
 	}
@@ -35,7 +35,7 @@ public class BasicPacket {
 	public boolean equals(Object o){
 	    if(o == null)	return false;		
 	    if(this == o)	return true;
-	    BasicPacket pktO = (BasicPacket) o;
+	    BasicCluPacket pktO = (BasicCluPacket) o;
 	    // first check tag present, then match tags
 	    if(!this.getMac_address().equals(pktO.getMac_address())) return false;
 	    
