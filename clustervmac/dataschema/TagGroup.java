@@ -31,6 +31,16 @@ public class TagGroup {
 		this.packetTag = packetTag;
 	}
 	
+	// return true if this tag group is empty. Only checking macRecord for now
+	public boolean free(){
+		if(macRecord.firstEnt() == null){
+			return true;
+		}
+		else{
+			return false;
+		}
+	}
+	
 	public void printLog(){
 		Location loc;
 		Set<Map.Entry<Long,MacGroup>> s = macRecord.allMaps();

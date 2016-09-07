@@ -26,7 +26,7 @@ public class EliminateCluster {
 	private final Long flipGapTime;
 	
 	public EliminateCluster(){
-		maxSilentTime = 200L;
+		maxSilentTime = 300L;
 		minGapTime = 1L;
 		maxExistTime = 500L;		//in the unit of second
 		// max speed is 5m/s
@@ -59,7 +59,8 @@ public class EliminateCluster {
 					// we are breaking from the whole taggroup
 					break;
 				}
-				System.out.println("finding next for: " + Long.toHexString(curPair.getMacAddr()));
+				//debugging
+				//System.out.println("finding next for: " + Long.toHexString(curPair.getMacAddr()));
 				MacGroup curMacGroup = tagGroup.macRecord.get(curPair.getMacAddr());
 				if(curMacGroup == null){
 					// this should not be reached
@@ -77,11 +78,12 @@ public class EliminateCluster {
 				//the candidates of the next MAC of the cur MAC
 				candidates = tagGroup.startTsRecord.subMap(floorBondPair, CeilBondPair);
 				boolean find = false;
-				int candNum = 0;
+				//int candNum = 0;
 				for(Map.Entry<TimeMacPair, Long> candid:candidates){
 					Long candMac = candid.getKey().getMacAddr();
-					candNum++;
-					System.out.println("candidate" + candNum + ": " + Long.toHexString(candMac));
+					//debugging
+					//candNum++;
+					//System.out.println("candidate" + candNum + ": " + Long.toHexString(candMac));
 					MacGroup candMacGroup = tagGroup.macRecord.get(candMac);
 					if(candMacGroup == null){
 						// this should not be reached
@@ -109,7 +111,7 @@ public class EliminateCluster {
 					}
 				}
 				if(find){
-					System.out.print("find! ");
+					//System.out.print("find! ");
 					//update next's leadMac
 					MacGroup delMacG = tagGroup.macRecord.get(delPair.getMacAddr());
 					if(curMacGroup.getLeadMac() == null){
@@ -124,13 +126,14 @@ public class EliminateCluster {
 					tagGroup.startTsRecord.remove(delPair);
 				}
 				//debugging
-				System.out.println("the next of " + Long.toHexString(curPair.getMacAddr()) + " is " + Long.toHexString(delPair.getMacAddr()));
+				//System.out.println("the next of " + Long.toHexString(curPair.getMacAddr()) + " is " + Long.toHexString(delPair.getMacAddr()));
+				/*
 				if(curMacGroup.getLeadMac() == null){
 					System.out.println("deleting " + Long.toHexString(curPair.getMacAddr()) + ", its leadmac is null");			
 				}
 				else{
 					System.out.println("deleting " + Long.toHexString(curPair.getMacAddr()) + ", its leadmac is " + Long.toHexString(curMacGroup.getLeadMac()));			
-				}
+				}*/
 				
 				cluStorer.storeCluster(curMacGroup);
 				
